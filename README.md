@@ -7,6 +7,8 @@ Using tkinter & python
 
 //agree on header 
 
+//python files should start with speeling_test_ (for example "spelling_test_gui",spelling_test_database")
+
 //declare variables at the start of the program and add a quick comment describing it
 
 //Comment on new lines of code (not repeated lines though)
