@@ -7,10 +7,15 @@ Using tkinter & python
 
 //agree on header 
 
+
 //Comment on new lines of code (not repeated lines though)
+
 //use snake_case for variable identifiers
+
 //no single letter variables("x","a") identifiers should be relevent and easy to understand
+
 //functions should also be sensibly named
+
 //agreed to write what you changed on what date 
 
 
