@@ -7,6 +7,7 @@ Using tkinter & python
 
 //agree on header 
 
+//declare variables at the start of the program and add a quick comment describing it
 
 //Comment on new lines of code (not repeated lines though)
 
