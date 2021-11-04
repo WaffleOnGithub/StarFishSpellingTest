@@ -4,7 +4,6 @@ Using tkinter & python
 
  
 
-(Quick test ignore this :D) 
 
 //agree on header 
 
