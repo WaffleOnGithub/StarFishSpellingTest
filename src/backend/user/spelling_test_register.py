@@ -1,8 +1,12 @@
 """
+Edited by: Jacob
+Date edited: 05/11/21
 
+Registers user whilst checking for duplicate usernames,
+verifying passwords and hashing passwords
 """
 
-from ..database import insert
+from ..database.spelling_test_database import cursor
 
 
 def register(username: str, password: str, email: str):
@@ -12,15 +16,28 @@ def register(username: str, password: str, email: str):
     :param username: username as a string
     :param password: password as a string
     :param email: email as a string
-    :return: true on success or error message on fail
+    :return: returns dictionary with success boolean and message
     """
 
-    if not valid_username(username):
+    if not valid_username(username).success:
         return
-    insert("Users", username, password, email)
+
+    # Build SQL statement to insert new user into database
+    statement = "INSERT INTO Users VALUES (?, ?, ?)"
+
+    # Insert new user
+    cursor.execute(statement, (username, password, email))
+
+    # Save the changes
+    cursor.commit()
 
 def valid_username(username):
-    pass
+    # Code to select
+    if len(username) < 3:
+        return {"success": False, "message": "Username is too short"}
+    statement = "SELECT * FROM Users WHERE username = ?"
+
+
 
 def valid_password(password):
     pass
