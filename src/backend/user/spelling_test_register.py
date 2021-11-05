@@ -1,7 +1,7 @@
 """
 
 """
-from ..spelling_test_database import insert
+from src.backend.database.spelling_test_database import insert
 
 
 def register(username, password, email):
