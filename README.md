@@ -5,7 +5,7 @@ Using tkinter & python
  
 
 
-//agree on header 
+//agree on header
 
 //python files should start with speeling_test_ (for example "spelling_test_gui",spelling_test_database")
 
@@ -24,7 +24,7 @@ Using tkinter & python
 
  
 
-Bank of 30 words (array) 
+Bank of 30 words (array) - for each difficulty
 
 Reading the words out loud 
 
