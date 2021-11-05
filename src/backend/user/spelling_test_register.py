@@ -6,7 +6,7 @@ Registers user whilst checking for duplicate usernames,
 verifying passwords and hashing passwords
 """
 
-from ..database.spelling_test_database import cursor
+from src.backend.database.spelling_test_database import cursor, connection
 
 
 def register(username: str, password: str, email: str):
@@ -20,7 +20,7 @@ def register(username: str, password: str, email: str):
     """
 
     if not valid_username(username).success:
-        return
+        return valid_username(username)
 
     # Build SQL statement to insert new user into database
     statement = "INSERT INTO Users VALUES (?, ?, ?)"
@@ -29,15 +29,35 @@ def register(username: str, password: str, email: str):
     cursor.execute(statement, (username, password, email))
 
     # Save the changes
-    cursor.commit()
+    connection.commit()
+
 
 def valid_username(username):
-    # Code to select
-    if len(username) < 3:
-        return {"success": False, "message": "Username is too short"}
-    statement = "SELECT * FROM Users WHERE username = ?"
+    """
+    Helper function for register that validates username length and availability
+    """
 
+    if len(username) < 3:
+        return {"success": False, "message": "Username must be at least 3 characters long"}
+    if len(username) > 20:
+        return {"success": False, "message": "Username cannot be longer than 20 characters"}
+
+    # Code to select all records where username already used
+    statement = "SELECT * FROM Users WHERE username = ?"
+    # Execute statement
+    cursor.execute(statement, username)
+
+    result = cursor.fetchone()
+    if result[0] > 0:  # Gets number of records where username already used
+        return {"success": False, "message": "Username already in use"}
+
+    return {"success": True}  # Return success = True if requirements passed
 
 
 def valid_password(password):
     pass
+
+
+if __name__ == "__main__":
+    cursor.execute("INSERT INTO Users VALUES (\"Jake\", \"Password\", \"ik\")")
+    connection.commit()
