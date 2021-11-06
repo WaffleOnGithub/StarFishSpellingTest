@@ -19,7 +19,7 @@ def register(username: str, password: str, email: str):
     :return: returns dictionary with success boolean and message
     """
 
-    if not valid_username(username).success:
+    if not valid_username(username)["success"]:
         return valid_username(username)
 
     # Build SQL statement to insert new user into database
@@ -42,10 +42,10 @@ def valid_username(username):
     if len(username) > 20:
         return {"success": False, "message": "Username cannot be longer than 20 characters"}
 
-    # Code to select all records where username already used
-    statement = "SELECT * FROM Users WHERE username = ?"
+    # Code to count all records where username already used
+    statement = "SELECT COUNT (*) FROM Users WHERE username = ?"
     # Execute statement
-    cursor.execute(statement, username)
+    cursor.execute(statement, [username])
 
     result = cursor.fetchone()
     if result[0] > 0:  # Gets number of records where username already used
@@ -56,8 +56,3 @@ def valid_username(username):
 
 def valid_password(password):
     pass
-
-
-if __name__ == "__main__":
-    cursor.execute("INSERT INTO Users VALUES (\"Jake\", \"Password\", \"ik\")")
-    connection.commit()
