@@ -16,6 +16,6 @@ def login(username: str, password: str):
     :return: dictionary with success boolean adn message
     """
 
-    statement = "SELECT password FROM Users WHERE username = ?"
+    statement = "SELECT password FROM Users WHERE username = %s"
 
-    cursor.execute(statement, (username))
+    cursor.execute(statement, (username,))
