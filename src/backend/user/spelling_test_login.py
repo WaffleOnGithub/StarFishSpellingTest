@@ -4,7 +4,8 @@ Date edited 07/11/21
 
 All functions for logging user in
 """
-from ..database.spelling_test_database import cursor, connection
+from ..spelling_test_database import cursor
+
 
 def login(username: str, password: str):
     """

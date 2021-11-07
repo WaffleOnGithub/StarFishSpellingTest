@@ -6,7 +6,7 @@ Registers user whilst checking for duplicate usernames,
 verifying passwords and hashing passwords
 """
 
-from src.backend.database.spelling_test_database import cursor, connection
+from ..spelling_test_database import cursor, connection
 import os
 import hashlib  # Used to hash passwords
 import re  # Used to make sure password meets requirements e.g. At least one special character
