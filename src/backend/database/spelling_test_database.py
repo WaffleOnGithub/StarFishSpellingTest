@@ -14,8 +14,8 @@ import mysql.connector
 connection = mysql.connector.connect(
     host="nettlecoding.co.uk",
     port="3306",
-    user="administrator",
-    password="[]sZTFb]OS.5]i7k",
+    user="spelling_test",
+    password="zAsHCuL(G!FWEtRF",
     database="spelling_test"
 )
 
