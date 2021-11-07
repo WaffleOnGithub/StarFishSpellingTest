@@ -1,0 +1,8 @@
+register(username: str, password: str, email: str)
+
+This function verifies the validity of the username and password and hashes it
+
+:param username: username as a string
+:param password: password as a string
+:param email: email as a string
+:return: returns dictionary with success boolean and message

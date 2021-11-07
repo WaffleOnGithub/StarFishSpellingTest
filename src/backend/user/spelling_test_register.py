@@ -31,7 +31,7 @@ def register(username: str, password: str, email: str):
     storage = hash_password(password)
 
     # Build SQL statement to insert new user into database
-    statement = "INSERT INTO Users VALUES (?, ?, ?)"
+    statement = "INSERT INTO Users VALUES (%s, %s, %s)"
 
     # Insert new user
     cursor.execute(statement, (username, storage, email))
@@ -55,9 +55,9 @@ def valid_username(username):
         return {"success": False, "message": "Your username cannot be longer than 20 characters"}
 
     # Code to count all records where username already used
-    statement = "SELECT COUNT (*) FROM Users WHERE username = ?"
+    statement = "SELECT COUNT(*) FROM Users WHERE username = %s"
     # Execute statement
-    cursor.execute(statement, [username])
+    cursor.execute(statement, (username,))
 
     result = cursor.fetchone()
     if result[0] > 0:  # Gets number of records where username already used

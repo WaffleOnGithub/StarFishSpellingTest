@@ -7,5 +7,5 @@ Imports everything that should be available
 to someone importing backend
 """
 
-from .spelling_test_login import *
+from .spelling_test_login import login
 from .spelling_test_register import register
