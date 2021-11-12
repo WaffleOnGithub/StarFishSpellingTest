@@ -6,4 +6,4 @@ Init file for backend package
 This is a space to import things that should be accessible when importing backend
 """
 
-from .spelling_test_check import question, check
+from .spelling_test_questions import question, check

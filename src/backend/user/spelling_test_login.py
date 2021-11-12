@@ -18,13 +18,14 @@ def login(username, password):
     :return: dictionary with success boolean and message
     """
 
-    for arg in [username, password]:  # Checks to see if fields are empty
+    # Checks to see if fields are empty
+    for arg in [username, password]:
         if len(arg) == 0:
             return {"success": False, "message": "Please fill in all fields"}
 
-    statement = "SELECT password FROM Users WHERE username = ?"
+    statement = "SELECT password FROM Users WHERE username = ?"  # Write SQL statement to be executed
     execute(statement, (username,))
-    result = cursor.fetchall()
+    result = cursor.fetchall()  # Gather results
 
     if not result:
         return {"success": False, "message": "Incorrect username or password"}

@@ -21,7 +21,8 @@ def register(username, password, email):
     :return: returns dictionary with success boolean and message
     """
 
-    for arg in [username, password, email]:  # Checks to see if fields are empty
+    # Checks to see if fields are empty
+    for arg in [username, password, email]:
         if len(arg) == 0:
             return {"success": False, "message": "Please fill in all fields"}
 
@@ -34,14 +35,9 @@ def register(username, password, email):
     salt = os.urandom(32)  # Randomly generated salt which is used in the hashing
     storage = hash_password(password, salt)  # Hashed password combined with salt
 
-    # Build SQL statement to insert new user into database
-    statement = "INSERT INTO Users VALUES (?, ?, ?)"
-
-    # Insert new user
-    execute(statement, (username, storage, email))
-
-    # Save the changes
-    connection.commit()
+    statement = "INSERT INTO Users VALUES (?, ?, ?)"  # Build SQL statement to insert new user into database
+    execute(statement, (username, storage, email))  # Insert new user
+    connection.commit()  # Save the changes
 
     return {"success": True, "message": "Success"}
 

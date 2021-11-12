@@ -3,9 +3,6 @@ Edited by: Liud and Jacob
 Date edited: 12/11/21
 
 Defines connections for database
-
-Bugs: Currently connects to local db as remote db requires mysql library
-which will not install
 """
 
 #import mysql.connector

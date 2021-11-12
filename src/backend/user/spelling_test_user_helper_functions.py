@@ -10,7 +10,7 @@ import hashlib  # Used to hash passwords
 
 def hash_password(password, salt):
     """
-    Helper function for register that hashes a password
+    Helper function for register and login that hashes a password
 
     :returns: hashed key with salt
     """
