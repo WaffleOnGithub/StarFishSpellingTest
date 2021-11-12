@@ -5,7 +5,7 @@ Date edited: 12/11/21
 Defines connections for database
 """
 
-#import mysql.connector
+# import mysql.connector
 
 # Opens remote db
 """connection = mysql.connector.connect(
@@ -19,8 +19,8 @@ Defines connections for database
 import sqlite3
 
 connection = sqlite3.connect("backend/database/spelling_test.db")  # Opens local db
-
 cursor = connection.cursor()  # Controls connection
 
-def execute(statement, values):
+
+def execute(statement, values=""):
     cursor.execute(statement, values)

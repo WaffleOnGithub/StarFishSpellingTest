@@ -1,5 +1,5 @@
 """
-Edited by: Liud
+Edited by: Liud and Jacob
 Date edited: 12/11/21
 
 Module for generating and checking questions
@@ -7,11 +7,11 @@ Module for generating and checking questions
 
 import random
 
-difficulties = {
+words = {
     "easy": ["apple", "inside", "parents", "guard", "lamb", "wrap", "geese", "gem", "touch", "wreck", "foul",
              "lure", "chief", "bat", "claw", "ship", "raise", "sauce", "leg", "palm", "calm", "weigh", "zeus",
              "row", "zoo", "dead", "city", "door", "tree", "house"],
-    "medium": ["training", "sulfer", "castle", "quantum", "cancer", "natural", "wizard", "genes", "business",
+    "medium": ["training", "flannel", "castle", "quantum", "cancer", "natural", "wizard", "genes", "business",
                "floorboard", "crystal", "sleep", "drawing", "painful", "tasty", "collect", "fake", "slowly", "expand",
                "speedboat", "fries", "brake", "builder", "economy", "dutch", "tunnel", "free", "memory", "mice",
                "music"],
@@ -23,7 +23,7 @@ difficulties = {
 
 
 def question(difficulty):
-    return random.choice(difficulties[difficulty])
+    return random.choice(words[difficulty])
 
 
 def check(answer, correct):

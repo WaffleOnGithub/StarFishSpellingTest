@@ -1,4 +1,3 @@
 import backend
 
-register = backend.login("Test user", "pAss%w0rd")
-print(register)
+backend.save_data("Test user", 30)

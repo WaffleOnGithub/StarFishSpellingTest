@@ -8,3 +8,4 @@ This is a space to import things that should be accessible when importing backen
 
 from .user import *
 from .test import *
+from .leaderboard import *

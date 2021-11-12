@@ -2,7 +2,7 @@
 Edited by: Jacob
 Date edited: 12/11/21
 
-Registers user whilst validating users and passwords
+Registers user whilst validating usernames and passwords
 """
 
 from ..database import cursor, connection, execute
