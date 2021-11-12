@@ -1,8 +1,9 @@
 """
 Edited by: Joe
-Date edited: 09/11/21
+Date edited: 12/11/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
+TODO: leaderbboard frame, reformat the test screen to look better
 """
 from tkinter import* #imports tkinter
 import tkinter as tk
@@ -95,27 +96,25 @@ def dificulty_select(): #frame that displays the dificulty select frame
     two_step_frame.pack_forget()
     dificulty_select_frame.pack()
 def test(dificulty): #function that displays the actual spelling test frame, the dificulty is passed as a parameter
-    text9 = ttk.Label(test_frame,text="Spell what you hear")
+    text9 = ttk.Label(test_frame,text="Spell what you hear: ")
     text9.grid(row=0,column=0)
 
-    button10 = ttk.Button(test_frame,text="this will be an icon",command=play_audio,)
-    button10.grid(row=1,column=0)
-    button11 = ttk.Button(test_frame,text="Submit",command=play_audio)
-    button11.grid(row=3,column=0)
+    button11 = ttk.Button(test_frame,text="Play Audio",command=play_audio)
+    button11.grid(row=1,column=2)
     
     textbox7 = ttk.Entry(test_frame, textvariable=word)
-    textbox7.grid(row=2,column=0)
+    textbox7.grid(row=0,column=1)
 
     dificulty_select_frame.pack_forget()
     test_frame.pack()
 def leaderboard(): #function that displays the leaderboard at the end of the game
     print()
 def signup_button(): #function that runs when the sign up button is clicked
-    signin()
+    signup_frame.pack_forget()
+    splash_screen()
 def signin_button(): #function that runs when the sign in button is clicked to check if the user has successfully logged in
-    #check agasint database
-    #if authorised ==True:          else:(splash_screen())
-    two_step()
+    global authorised 
+    splash_screen()
 def two_step_auth_button(): #function that runs when the two step verification code is submitted
     #check against something for the 2 step code
     dificulty_select()
