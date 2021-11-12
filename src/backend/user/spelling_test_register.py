@@ -1,18 +1,17 @@
 """
 Edited by: Jacob
-Date edited: 05/11/21
+Date edited: 12/11/21
 
-Registers user whilst checking for duplicate usernames,
-verifying passwords and hashing passwords
+Registers user whilst validating users and passwords
 """
 
 from ..database import cursor, connection, execute
+from ..user.spelling_test_user_helper_functions import hash_password
 import os
-import hashlib  # Used to hash passwords
 import re  # Used to make sure password meets requirements e.g. At least one special character
 
 
-def register(username: str, password: str, email: str):
+def register(username, password, email):
     """
     This function verifies the validity of the username and password and hashes it
 
@@ -22,13 +21,18 @@ def register(username: str, password: str, email: str):
     :return: returns dictionary with success boolean and message
     """
 
+    for arg in [username, password, email]:  # Checks to see if fields are empty
+        if len(arg) == 0:
+            return {"success": False, "message": "Please fill in all fields"}
+
     # Validates credentials and returns messages if error
     if not valid_username(username)["success"]:
         return valid_username(username)
     if not valid_password(password)["success"]:
         return valid_password(password)
 
-    storage = hash_password(password)
+    salt = os.urandom(32)  # Randomly generated salt which is used in the hashing
+    storage = hash_password(password, salt)  # Hashed password combined with salt
 
     # Build SQL statement to insert new user into database
     statement = "INSERT INTO Users VALUES (?, ?, ?)"
@@ -82,24 +86,3 @@ def valid_password(password):
     if re.search("[$&+,:;=?@#|'<>.^*()%!]", password) is None:
         return {"success": False, "message": "Your password must contain at least one special character"}
     return {"success": True}
-
-def hash_password(password):
-    """
-    Helper function for register that hashes a password
-
-    :returns: hashed key with salt
-    """
-
-    # Randomly generated salt which is used in the hashing
-    salt = os.urandom(32)
-
-    # Hashes password
-    key = hashlib.pbkdf2_hmac(
-        "sha256",  # Hash digest algorithm
-        password.encode("utf-8"),  # Convert password to bytes
-        salt,
-        100000  # Iterations of hash digest algorithm
-    )
-
-    # Return salt and hashed password together
-    return salt + key

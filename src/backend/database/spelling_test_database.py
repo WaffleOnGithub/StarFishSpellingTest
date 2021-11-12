@@ -1,6 +1,6 @@
 """
 Edited by: Liud and Jacob
-Date edited: 07/11/21
+Date edited: 12/11/21
 
 Defines connections for database
 

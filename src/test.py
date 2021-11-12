@@ -1,4 +1,4 @@
 import backend
 
-register = backend.register("Test user", "pAss%w0rd", "email")
+register = backend.login("Test user", "pAss%w0rd")
 print(register)
