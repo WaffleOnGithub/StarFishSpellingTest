@@ -100,7 +100,9 @@ def test(dificulty): #function that displays the actual spelling test frame, the
     text9.grid(row=0,column=0)
 
     button11 = ttk.Button(test_frame,text="Play Audio",command=play_audio)
-    button11.grid(row=1,column=2)
+    button11.grid(row=1,column=1)
+    button12 = ttk.Button(test_frame,text="Submit",command=submit_answer)
+    button12.grid(row=1,column=2)
     
     textbox7 = ttk.Entry(test_frame, textvariable=word)
     textbox7.grid(row=0,column=1)
@@ -113,8 +115,8 @@ def signup_button(): #function that runs when the sign up button is clicked
     signup_frame.pack_forget()
     splash_screen()
 def signin_button(): #function that runs when the sign in button is clicked to check if the user has successfully logged in
-    global authorised 
-    splash_screen()
+    signin_frame.pack_forget()
+    two_step()
 def two_step_auth_button(): #function that runs when the two step verification code is submitted
     #check against something for the 2 step code
     dificulty_select()
@@ -140,7 +142,8 @@ def back(): #code that runs when the back button is pressed
 def play_audio(): #code that plays the correct audio file in the spelling test
     #code to select and play the audio file
     print()
-    
+def submit_answer():#code that submits the answer to be checked
+    print("wow, answer")
 root = tk.Tk() #gives the container the identifier "root"
 root.title("Spelling test") #gives the window title
 
