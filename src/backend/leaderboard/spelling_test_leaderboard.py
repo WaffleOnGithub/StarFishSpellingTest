@@ -2,7 +2,7 @@
 Edited by: Jacob
 Date edited: 12/11/21
 
-Functions and procedures for getting users' leaderboard data
+Functions and procedures for getting and setting users' leaderboard data
 """
 
 from ..database.spelling_test_database import cursor, connection, execute
