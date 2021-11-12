@@ -4,7 +4,8 @@ Date edited 07/11/21
 
 All functions for logging user in
 """
-from ..spelling_test_database import cursor
+
+from ..database import cursor, execute
 
 
 def login(username: str, password: str):
@@ -16,6 +17,9 @@ def login(username: str, password: str):
     :return: dictionary with success boolean adn message
     """
 
-    statement = "SELECT password FROM Users WHERE username = %s"
+    statement = "SELECT password FROM Users WHERE username = ?"
 
-    cursor.execute(statement, (username,))
+    execute(statement, (username,))
+
+    if cursor.fetchone()[0] == 0:
+        return {"success": False, "message": "incorrect username or password"}

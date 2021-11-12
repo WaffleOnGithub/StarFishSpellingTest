@@ -6,7 +6,7 @@ Registers user whilst checking for duplicate usernames,
 verifying passwords and hashing passwords
 """
 
-from ..spelling_test_database import cursor, connection
+from ..database import cursor, connection, execute
 import os
 import hashlib  # Used to hash passwords
 import re  # Used to make sure password meets requirements e.g. At least one special character
@@ -31,10 +31,10 @@ def register(username: str, password: str, email: str):
     storage = hash_password(password)
 
     # Build SQL statement to insert new user into database
-    statement = "INSERT INTO Users VALUES (%s, %s, %s)"
+    statement = "INSERT INTO Users VALUES (?, ?, ?)"
 
     # Insert new user
-    cursor.execute(statement, (username, storage, email))
+    execute(statement, (username, storage, email))
 
     # Save the changes
     connection.commit()
@@ -55,9 +55,9 @@ def valid_username(username):
         return {"success": False, "message": "Your username cannot be longer than 20 characters"}
 
     # Code to count all records where username already used
-    statement = "SELECT COUNT(*) FROM Users WHERE username = %s"
+    statement = "SELECT COUNT(*) FROM Users WHERE username = ?"
     # Execute statement
-    cursor.execute(statement, (username,))
+    execute(statement, (username,))
 
     result = cursor.fetchone()
     if result[0] > 0:  # Gets number of records where username already used
