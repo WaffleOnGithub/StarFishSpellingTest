@@ -19,7 +19,7 @@ def get_data(username=None):
 
     # Set SQL statement and execute, dependent on whether specific user requested or not
     if username is None:
-        statement = "SELECT * FROM Leaderboard"
+        statement = "SELECT * FROM Leaderboard ORDER BY score DESC"
         execute(statement)
     else:
         statement = "SELECT * FROM Leaderboard WHERE username = ?"

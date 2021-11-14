@@ -1,3 +1,4 @@
 import backend
 
-backend.save_data("Test user", 30)
+backend.save_data("Test User", 18)
+print(backend.get_data())
