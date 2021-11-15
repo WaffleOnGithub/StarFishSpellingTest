@@ -1,5 +1,4 @@
 import win32com.client as wincl
-from spelling_test_questions import words
 
 def easyQuestion(easy_word):
     speakEasy = wincl.Dispatch("SAPI.SpVoice")
