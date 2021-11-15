@@ -1,5 +1,5 @@
 """
-Edited by: Liud and Jacob
+Edited by: Liud
 Date edited: 12/11/21
 
 Module for generating and checking questions
