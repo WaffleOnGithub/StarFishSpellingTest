@@ -1,13 +1,14 @@
 """
 Edited by: Joe
-Date edited: 12/11/21
+Date edited: 19/11/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
-TODO: leaderbboard frame, reformat the test screen to look better
+TODO: leaderbboard frame, set authorised to false for later, implement other modules
 """
 from tkinter import* #imports tkinter
 import tkinter as tk
 from tkinter import ttk #imports ttk for imporved widget styling
+from tkinter import messagebox
 #import backend #imports custom backend code
 
 def splash_screen(): #function to display the initial frame
@@ -83,7 +84,9 @@ def two_step(): #function to display the two step verification frame
     signin_frame.pack_forget()
     two_step_frame.pack()
 def dificulty_select(): #frame that displays the dificulty select frame
-    text8 = ttk.Label(dificulty_select_frame,text="Please select your dificulty(note, this cannot be undone)")
+    global current_frame
+    current_frame="dificulty_select_frame"
+    text8 = ttk.Label(dificulty_select_frame,text="Please select your dificulty:")
     text8.grid(row=0,column=0,sticky="W")
 
     button7 = ttk.Button(dificulty_select_frame,text="Easy",command=easy_button)
@@ -92,40 +95,61 @@ def dificulty_select(): #frame that displays the dificulty select frame
     button8.grid(row=2,column=0)
     button9 = ttk.Button(dificulty_select_frame,text="Hard",command=hard_button)
     button9.grid(row=3,column=0)
-        
+    button10 = ttk.Button(dificulty_select_frame,text="Back",command=back)
+    button10.grid(row=4,column=0)
+    
     two_step_frame.pack_forget()
     dificulty_select_frame.pack()
 def test(dificulty): #function that displays the actual spelling test frame, the dificulty is passed as a parameter
-    text9 = ttk.Label(test_frame,text="Spell what you hear: ")
-    text9.grid(row=0,column=0)
+    global current_frame
+    current_frame="test"
+    text9 = ttk.Label(test_frame,text="Spell what you hear! use the return key to submit")
+    text9.grid(row=0,column=0,columnspan=2)
 
     button11 = ttk.Button(test_frame,text="Play Audio",command=play_audio)
-    button11.grid(row=1,column=1)
-    button12 = ttk.Button(test_frame,text="Submit",command=submit_answer)
-    button12.grid(row=1,column=2)
+    button11.grid(row=2,column=1)
+    button12 = ttk.Button(test_frame,text="Leaderboard",command=leaderboard)
+    button12.grid(row=2,column=0)
     
     textbox7 = ttk.Entry(test_frame, textvariable=word)
-    textbox7.grid(row=0,column=1)
+    textbox7.grid(row=1,column=0,columnspan=2)
 
     dificulty_select_frame.pack_forget()
     test_frame.pack()
 def leaderboard(): #function that displays the leaderboard at the end of the game
-    print()
+    test_frame.pack_forget()
+    text9 = ttk.Label(leaderboard_frame,text="Top 5 users:")
+    text9.grid(row=0,column=0)
+    leaderboard_frame.pack()
+    
 def signup_button(): #function that runs when the sign up button is clicked
     signup_frame.pack_forget()
     splash_screen()
+    
 def signin_button(): #function that runs when the sign in button is clicked to check if the user has successfully logged in
-    signin_frame.pack_forget()
-    two_step()
+    global authorised
+    if authorised == True:
+        signin_frame.pack_forget()
+        two_step()
+    else:
+        messagebox.showerror('error', 'Login details incorrect')
+    
 def two_step_auth_button(): #function that runs when the two step verification code is submitted
     #check against something for the 2 step code
-    dificulty_select()
+    global twoauthorised
+    if twoauthorised == True:
+        dificulty_select()
+    else:
+        messagebox.showerror('error', '2 step authorization code incorrect')
 def easy_button(): #function that runs the test on easy dificulty
     test("easy")
+    
 def medium_button(): #function that runs the test on medium dificulty
     test("medium")
+    
 def hard_button(): #function that runs the test on hard dificulty
     test("hard")
+    
 def back(): #code that runs when the back button is pressed
     global current_frame
     if current_frame == "signup_frame": 
@@ -136,16 +160,26 @@ def back(): #code that runs when the back button is pressed
         splash_screen()
     elif current_frame == "two_step_frame":
         two_step_frame.pack_forget()
-        splash_screen()
+        signin()
+    elif current_frame == "dificulty_select_frame":
+        dificulty_select_frame.pack_forget()
+        two_step()
     else:
-        print("What?")
+        print("How?")
 def play_audio(): #code that plays the correct audio file in the spelling test
     #code to select and play the audio file
     print()
-def submit_answer():#code that submits the answer to be checked
-    print("wow, answer")
+def submit_answer(self):#code that submits the answer to be checked
+    global current_frame
+    if current_frame == "test":
+        answer = word.get()
+        print(answer)
+    else:
+        pass
+    
 root = tk.Tk() #gives the container the identifier "root"
 root.title("Spelling test") #gives the window title
+root.bind('<Return>', submit_answer)
 
 splash_screen_frame = ttk.Frame(root) #creates a new frame that widgets can be added to independently of other frames
 signup_frame = ttk.Frame(root)
@@ -153,10 +187,11 @@ signin_frame = ttk.Frame(root)
 two_step_frame = ttk.Frame(root)
 dificulty_select_frame = ttk.Frame(root)
 test_frame = ttk.Frame(root)
-leaderboard = ttk.Frame(root)
+leaderboard_frame = ttk.Frame(root)
 
-global current_frame,authorised  #creates global variables used to navigate between frames
-authorised = False #will be turned true when the user has succesfully logged in and is allowed to use the program
+global current_frame,authorised,twoauthorised  #creates global variables used to navigate between frames
+authorised = True #will be turned true when the user has succesfully logged in and is allowed to use the program
+twoauthorised = True
 
 username = tk.StringVar() #empty string variable that will hold the users username when submitted
 password = tk.StringVar() #empty string that will hold the uers password when submitted
