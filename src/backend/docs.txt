@@ -24,7 +24,8 @@ backend.check(answer, correct)
 backend.login(username, password)
 
   Returns dictionary with "success" (boolean for login success) and "message" (error message) keys
-  E.g. backend.login("User 1", "Password")["success"] or backend.login("User 1", "Password")["message"]
+  E.g. backend.login("User 1", "Password")["success"]  # Returns True/False
+  backend.login("User 1", "Password")["message"]  # Returns error message e.g. "Incorrect username or password"
 
 backend.register(username, password, email)
 
