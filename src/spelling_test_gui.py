@@ -1,6 +1,6 @@
 """
 Edited by: Joe
-Date edited: 19/11/21
+Date edited: 22/11/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
 TODO: leaderbboard frame, set authorised to false for later, implement other modules
@@ -9,7 +9,7 @@ from tkinter import* #imports tkinter
 import tkinter as tk
 from tkinter import ttk #imports ttk for imporved widget styling
 from tkinter import messagebox
-#import backend #imports custom backend code
+import backend #imports custom backend code
 
 def splash_screen(): #function to display the initial frame
     button = ttk.Button(splash_screen_frame, text="sign up", command=signup) #creates a button
@@ -135,7 +135,8 @@ def signin_button(): #function that runs when the sign in button is clicked to c
         messagebox.showerror('error', 'Login details incorrect')
     
 def two_step_auth_button(): #function that runs when the two step verification code is submitted
-    #check against something for the 2 step code
+    big_test = backend.send_email("buckleypad@gmail.com")
+    print(big_test)
     global twoauthorised
     if twoauthorised == True:
         dificulty_select()
