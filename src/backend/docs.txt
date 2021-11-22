@@ -1,3 +1,7 @@
+backend.send_email(user_email)
+
+  Send email with an authentication code. The function returns the code to the program which can check the user input against it
+
 backend.get_data(username=None)
 
   username argument is empty by default. If left empty, the whole leaderbaord will be returned as a multi-dimensional array in descending order
