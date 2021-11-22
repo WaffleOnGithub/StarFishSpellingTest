@@ -13,9 +13,9 @@ def send_email(user_email):
     receiver_email=user_email
     code=""
     message = """\
-Subject: Spelling Test User Verifacation
+Subject: Spelling Test User Verification
 
-Your two step verifacation code is """""
+Your two step verification code is """""
     
     for i in range(6):
         operation = random.randint(0,1)
