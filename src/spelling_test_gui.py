@@ -3,72 +3,85 @@ Edited by: Joe
 Date edited: 22/11/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
-TODO: leaderbboard frame, set authorised to false for later, implement other modules
+TODO: leaderboard frame, set authorised to false for later, implement other modules,rename the entry boxes and labels
+known bugs: signin function might not be working correctly
 """
-from tkinter import* #imports tkinter
+from tkinter import*
 import tkinter as tk
-from tkinter import ttk #imports ttk for imporved widget styling
+from tkinter import ttk 
 from tkinter import messagebox
-import backend #imports custom backend code
+import backend 
 
-def splash_screen(): #function to display the initial frame
-    button = ttk.Button(splash_screen_frame, text="sign up", command=signup) #creates a button
-    button.grid(row=0,column=0,sticky="W") #positions the button on a grid
+def splash_screen():
+    """
+    function that creates the landing frame's graphics
+    """
+    button = ttk.Button(splash_screen_frame, text="sign up", command=signup) 
+    button.grid(row=0,column=0,sticky="W") 
     button1 = ttk.Button(splash_screen_frame, text="sign in", command=signin)
     button1.grid(row=0,column=1,sticky="W")
-    splash_screen_frame.pack() #makes the frame visible
+    splash_screen_frame.pack()
     
-def signup(): #function to display the signup frame
-    global current_frame #imports the global variable used for navigating between frames
-    current_frame = "signup_frame" #sets the current_frame to the current frame
-    text1 = ttk.Label(signup_frame,text="Enter your username: ") #creates a label widget
-    text1.grid(row=0,column=0,sticky="W") #places it on the grid
+def signup():
+    """
+    function that creates the signup frames's graphics
+    """
+    global current_frame
+    current_frame = "signup_frame"
+    #sets the current frame for navigation between frames
+    text1 = ttk.Label(signup_frame,text="Enter your username: ")
+    #creates a widget
+    text1.grid(row=0,column=0,sticky="W")
+    #places it on the grid
     text2 = ttk.Label(signup_frame,text="Enter your password: ")
     text2.grid(row=1,column=0,sticky="W")
     text3 = ttk.Label(signup_frame,text="Enter your email: ")
     text3.grid(row=2,column=0,sticky="W")
     
-    textbox = ttk.Entry(signup_frame, textvariable=username) #creates an entry widget for the user to enter text
-    textbox.grid(row=0,column=1,sticky="W") #places the entry widget on a grid
+    textbox = ttk.Entry(signup_frame, textvariable=username) 
+    textbox.grid(row=0,column=1,sticky="W") 
     textbox1 = ttk.Entry(signup_frame, textvariable=password)
     textbox1.grid(row=1,column=1,sticky="W")
     textbox2 = ttk.Entry(signup_frame, textvariable=email)
     textbox2.grid(row=2,column=1,sticky="W")
 
-    button3 = ttk.Button(signup_frame,text="back",command=back) #goes back to the previous frame
+    button3 = ttk.Button(signup_frame,text="back",command=back)
     button3.grid(row=3,column=0,sticky="W")
-    button4 = ttk.Button(signup_frame,text="submit",command=signup_button) #runs a procedure that adds the information to the database
+    button4 = ttk.Button(signup_frame,text="submit",command=signup_button)
     button4.grid(row=3,column=1,sticky="W")
 
     splash_screen_frame.pack_forget() #makes the splash frame invisible
     signup_frame.pack() #displays the sign up frame 
     
-def signin(): #function to display the sign in frame
+def signin():
+    """
+    function that creates the signin frames's graphics
+    """
     global current_frame
     current_frame = "signin_frame"
     text4 = ttk.Label(signin_frame,text="Enter your username: ")
     text4.grid(row=0,column=0,sticky="W")
     text5 = ttk.Label(signin_frame,text="Enter your password: ")
     text5.grid(row=1,column=0,sticky="W")
-    text6 = ttk.Label(signin_frame,text="Enter your email: ")
-    text6.grid(row=2,column=0,sticky="W")
 
     textbox3 = ttk.Entry(signin_frame, textvariable=username)
     textbox3.grid(row=0,column=1,sticky="W")
     textbox4 = ttk.Entry(signin_frame, textvariable=password)
     textbox4.grid(row=1,column=1,sticky="W")
-    textbox5 = ttk.Entry(signin_frame,textvariable=email)
-    textbox5.grid(row=2,column=1,sticky="W")
     
     button3 = ttk.Button(signin_frame,text="back",command=back)
     button3.grid(row=3,column=0,sticky="W")
-    button4 = ttk.Button(signin_frame,text="submit",command=signin_button) #verifies the users information
+    button4 = ttk.Button(signin_frame,text="submit",command=signin_button) 
     button4.grid(row=3,column=1,sticky="W")
     
     splash_screen_frame.pack_forget()
     signin_frame.pack()
-def two_step(): #function to display the two step verification frame 
-    global current_frame
+def two_step():
+    """
+    function that creates the two step verification frames's graphics and sends an email to the specified email adress
+    """
+    global current_frame,passcode
+    passcode = backend.send_email(email.get())
     current_frame="two_step_frame"
     text7 = ttk.Label(two_step_frame,text="Please enter the code sent to your email adress: ")
     text7.grid(row=0,column=0,sticky="W")
@@ -78,12 +91,15 @@ def two_step(): #function to display the two step verification frame
 
     button5 = ttk.Button(two_step_frame,text="back",command=back)
     button5.grid(row=3,column=0,sticky="W")
-    button6 = ttk.Button(two_step_frame,text="submit",command=two_step_auth_button) #function that will check the users input against the code sent by the code
+    button6 = ttk.Button(two_step_frame,text="submit",command=two_step_auth_button)
     button6.grid(row=3,column=1,sticky="W")
     
     signin_frame.pack_forget()
     two_step_frame.pack()
-def dificulty_select(): #frame that displays the dificulty select frame
+def dificulty_select():
+    """
+    function that creates the two dificulty select frames's graphics
+    """
     global current_frame
     current_frame="dificulty_select_frame"
     text8 = ttk.Label(dificulty_select_frame,text="Please select your dificulty:")
@@ -100,7 +116,10 @@ def dificulty_select(): #frame that displays the dificulty select frame
     
     two_step_frame.pack_forget()
     dificulty_select_frame.pack()
-def test(dificulty): #function that displays the actual spelling test frame, the dificulty is passed as a parameter
+def test(dificulty):
+    """
+    function that creates the two step test frames's graphics and passes the users selected dificulty as a parameter
+    """
     global current_frame
     current_frame="test"
     text9 = ttk.Label(test_frame,text="Spell what you hear! use the return key to submit")
@@ -116,42 +135,83 @@ def test(dificulty): #function that displays the actual spelling test frame, the
 
     dificulty_select_frame.pack_forget()
     test_frame.pack()
-def leaderboard(): #function that displays the leaderboard at the end of the game
+    
+def leaderboard():
+    """
+    function that displays the leaderboard at the end of the game
+    """
     test_frame.pack_forget()
     text9 = ttk.Label(leaderboard_frame,text="Top 5 users:")
     text9.grid(row=0,column=0)
     leaderboard_frame.pack()
     
-def signup_button(): #function that runs when the sign up button is clicked
-    signup_frame.pack_forget()
-    splash_screen()
-    
-def signin_button(): #function that runs when the sign in button is clicked to check if the user has successfully logged in
-    global authorised
-    if authorised == True:
-        signin_frame.pack_forget()
-        two_step()
+def signup_button():
+    """
+    function that erases the previous frame, adds the users details to a database and then prompts the uesr to sign in if the data was saved correctly
+    """
+    if username.get()== "":
+       messagebox.showerror('Input fields cannot be left blank')
+    elif  password.get() =="":
+       messagebox.showerror('Input fields cannot be left blank')
+    elif email.get() =="":
+       messagebox.showerror('Input fields cannot be left blank')
     else:
-        messagebox.showerror('error', 'Login details incorrect')
+        auth = backend.register(username.get(), password.get(), email.get())
+        print(auth)
+        signup_frame.pack_forget()
+        splash_screen()
     
-def two_step_auth_button(): #function that runs when the two step verification code is submitted
-    big_test = backend.send_email("buckleypad@gmail.com")
-    print(big_test)
-    global twoauthorised
-    if twoauthorised == True:
+def signin_button():
+    """
+    function that checks the users credentials against the database and moves forward if correct
+    """
+    if username.get()== "":
+       messagebox.showerror('Input fields cannot be left blank')
+    elif  password.get() =="":
+       messagebox.showerror('Input fields cannot be left blank')
+##    else: #fix this bit
+##        auth = backend.login(username.get(), password.get())
+##        print(auth)
+##        if auth == auth:
+##            signin_frame.pack_forget()
+##            two_step()
+##        else:
+##                   messagebox.showerror('Login details incorrect')
+
+    signup_frame.pack_forget()
+    two_step
+    
+def two_step_auth_button():
+    """
+    function that checks the users credentials against the database and moves forward if correct
+    """    
+    if  passcode == auth_code.get():
         dificulty_select()
     else:
-        messagebox.showerror('error', '2 step authorization code incorrect')
-def easy_button(): #function that runs the test on easy dificulty
+       messagebox.showerror('error', '2 step authorization code incorrect')
+        
+def easy_button():
+    """
+    function that runs the test code passing "easy" as a parameter
+    """
     test("easy")
     
-def medium_button(): #function that runs the test on medium dificulty
+def medium_button():
+    """
+    function that runs the test code passing "medium" as a parameter
+    """
     test("medium")
     
-def hard_button(): #function that runs the test on hard dificulty
+def hard_button():
+    """
+    function that runs the test code passing "hard" as a parameter
+    """
     test("hard")
     
-def back(): #code that runs when the back button is pressed
+def back():
+    """
+    function that chekcs the current frame and sends the user back a frame
+    """
     global current_frame
     if current_frame == "signup_frame": 
         signup_frame.pack_forget()
@@ -167,22 +227,26 @@ def back(): #code that runs when the back button is pressed
         two_step()
     else:
         print("How?")
-def play_audio(): #code that plays the correct audio file in the spelling test
-    #code to select and play the audio file
+        
+def play_audio():
+    """
+    function that plays audio
+    """
     print()
-def submit_answer(self):#code that submits the answer to be checked
-    global current_frame
-    if current_frame == "test":
-        answer = word.get()
-        print(answer)
-    else:
-        pass
+
+def submit_answer(self):
+    """
+    function that submits the users answer to be checked
+    """
+    print()
     
-root = tk.Tk() #gives the container the identifier "root"
-root.title("Spelling test") #gives the window title
+root = tk.Tk()
+#gives the container the identifier "root" 
+root.title("Spelling test")
 root.bind('<Return>', submit_answer)
 
-splash_screen_frame = ttk.Frame(root) #creates a new frame that widgets can be added to independently of other frames
+splash_screen_frame = ttk.Frame(root)
+#creates a new framethat widgets can be added to
 signup_frame = ttk.Frame(root)
 signin_frame = ttk.Frame(root)
 two_step_frame = ttk.Frame(root)
@@ -190,16 +254,17 @@ dificulty_select_frame = ttk.Frame(root)
 test_frame = ttk.Frame(root)
 leaderboard_frame = ttk.Frame(root)
 
-global current_frame,authorised,twoauthorised  #creates global variables used to navigate between frames
-authorised = True #will be turned true when the user has succesfully logged in and is allowed to use the program
+global current_frame,authorised,passcode
+authorised = True
 twoauthorised = True
 
-username = tk.StringVar() #empty string variable that will hold the users username when submitted
-password = tk.StringVar() #empty string that will hold the uers password when submitted
-email = tk.StringVar() #empty string that will hold the uers email when submitted
-auth_code = tk.StringVar() #empty string that will hold the users 2 step autherisation code when submitted
+username = tk.StringVar()
+#empty string variable that will hold the users username when submitted
+password = tk.StringVar() 
+email = tk.StringVar() 
+auth_code = tk.StringVar() 
 word = tk.StringVar()
 
-splash_screen() #displays the splash screen
-
-root.mainloop() #runs the graphical code infinitly and is only interupted by mouse clicks
+splash_screen() 
+#runs the first function that starts the program
+root.mainloop()
