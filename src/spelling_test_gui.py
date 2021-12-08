@@ -3,7 +3,7 @@ Edited by: Joe
 Date edited: 22/11/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
-TODO: leaderboard frame, set authorised to false for later, implement other modules,rename the entry boxes and labels
+TODO: leaderboard frame, game logic, make the game screen look better too
 known bugs: signin function might not be working correctly
 """
 from tkinter import*
@@ -63,12 +63,16 @@ def signin():
     text4.grid(row=0,column=0,sticky="W")
     text5 = ttk.Label(signin_frame,text="Enter your password: ")
     text5.grid(row=1,column=0,sticky="W")
+    text6 = ttk.Label(signin_frame,text="Enter your Email: ")
+    text6.grid(row=2,column=0,sticky="W")
 
     textbox3 = ttk.Entry(signin_frame, textvariable=username)
     textbox3.grid(row=0,column=1,sticky="W")
     textbox4 = ttk.Entry(signin_frame, textvariable=password)
     textbox4.grid(row=1,column=1,sticky="W")
-    
+    textbox5 = ttk.Entry(signin_frame, textvariable=email)
+    textbox5.grid(row=2,column=1,sticky="W")
+
     button3 = ttk.Button(signin_frame,text="back",command=back)
     button3.grid(row=3,column=0,sticky="W")
     button4 = ttk.Button(signin_frame,text="submit",command=signin_button) 
@@ -116,26 +120,31 @@ def dificulty_select():
     
     two_step_frame.pack_forget()
     dificulty_select_frame.pack()
-def test(dificulty):
+def test(difficulty):
     """
     function that creates the two step test frames's graphics and passes the users selected dificulty as a parameter
     """
     global current_frame
     current_frame="test"
-    text9 = ttk.Label(test_frame,text="Spell what you hear! use the return key to submit")
-    text9.grid(row=0,column=0,columnspan=2)
+    text9 = ttk.Label(test_frame,text="dificulty: "+difficulty)
+    text9.grid(row=0,column=0,columnspan=2,sticky="W")
+    text10 = ttk.Label(test_frame,text="Score: "+str(score))
+    text10.grid(row=0,column=2,sticky="W")
 
-    button11 = ttk.Button(test_frame,text="Play Audio",command=play_audio)
+    button11 = ttk.Button(test_frame,text="Leaderboard",command=leaderboard)
     button11.grid(row=2,column=1)
-    button12 = ttk.Button(test_frame,text="Leaderboard",command=leaderboard)
-    button12.grid(row=2,column=0)
+    button12 = ttk.Button(test_frame,text="Next Word",command=play_audio(difficulty))
+    button12.grid(row=2,column=2)
+    button13 = ttk.Button(test_frame,text="Submit",command=submit_answer(""))
+    button13.grid(row=1,column=2)
+    button13 = ttk.Button(test_frame,text="Back",command=back)
+    button13.grid(row=2,column=0)
     
     textbox7 = ttk.Entry(test_frame, textvariable=word)
-    textbox7.grid(row=1,column=0,columnspan=2)
+    textbox7.grid(row=1,column=0,columnspan=2,sticky="W")
 
     dificulty_select_frame.pack_forget()
-    test_frame.pack()
-    
+    test_frame.pack()    
 def leaderboard():
     """
     function that displays the leaderboard at the end of the game
@@ -161,7 +170,7 @@ def signup_button():
         signup_frame.pack_forget()
         splash_screen()
     
-def signin_button():
+def signin_button(): 
     """
     function that checks the users credentials against the database and moves forward if correct
     """
@@ -169,14 +178,16 @@ def signin_button():
        messagebox.showerror('Input fields cannot be left blank')
     elif  password.get() =="":
        messagebox.showerror('Input fields cannot be left blank')
-##    else: #fix this bit
-##        auth = backend.login(username.get(), password.get())
-##        print(auth)
-##        if auth == auth:
-##            signin_frame.pack_forget()
-##            two_step()
-##        else:
-##                   messagebox.showerror('Login details incorrect')
+    elif email.get() =="":
+        messagebox.showerror('Input fields cannot be left blank')
+    else:
+        #uses the users inputs as parameters for login
+        auth = backend.login(username.get(), password.get())["success"]
+        if auth == True:
+            signin_frame.pack_forget()
+            two_step()
+        else:
+                   messagebox.showerror('Login details incorrect')
 
     signup_frame.pack_forget()
     two_step
@@ -225,14 +236,20 @@ def back():
     elif current_frame == "dificulty_select_frame":
         dificulty_select_frame.pack_forget()
         two_step()
+    elif current_frame == "test":
+        test_frame.pack_forget()
+        dificulty_select()
     else:
         print("How?")
         
-def play_audio():
+def play_audio(difficulty):
     """
-    function that plays audio
+    function that picks a word and plays the appropiate audio
     """
-    print()
+    global word
+    word = backend.question(difficulty)
+    print(word)
+
 
 def submit_answer(self):
     """
@@ -254,7 +271,8 @@ dificulty_select_frame = ttk.Frame(root)
 test_frame = ttk.Frame(root)
 leaderboard_frame = ttk.Frame(root)
 
-global current_frame,authorised,passcode
+global current_frame,authorised,passcode,word,score
+score = 0
 authorised = True
 twoauthorised = True
 
@@ -265,6 +283,7 @@ email = tk.StringVar()
 auth_code = tk.StringVar() 
 word = tk.StringVar()
 
-splash_screen() 
+test("easy")
+#splash_screen() 
 #runs the first function that starts the program
 root.mainloop()
