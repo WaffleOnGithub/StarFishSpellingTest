@@ -1,10 +1,10 @@
 """
 Edited by: Joe
-Date edited: 22/11/21
+Date edited: 14/12/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
-TODO: leaderboard frame, game logic, make the game screen look better too
-known bugs: signin function might not be working correctly
+TODO: leaderboard frame,fix formatting on the signup/signin error boxes,implement TTS
+known bugs:submit and next audio buttons don't run their function when clicked (however the return key can be used to submit instead)
 """
 from tkinter import*
 import tkinter as tk
@@ -140,7 +140,7 @@ def test(difficulty):
     button13 = ttk.Button(test_frame,text="Back",command=back)
     button13.grid(row=2,column=0)
     
-    textbox7 = ttk.Entry(test_frame, textvariable=word)
+    textbox7 = ttk.Entry(test_frame, textvariable=user_word)
     textbox7.grid(row=1,column=0,columnspan=2,sticky="W")
 
     dificulty_select_frame.pack_forget()
@@ -149,9 +149,11 @@ def leaderboard():
     """
     function that displays the leaderboard at the end of the game
     """
+    backend.save_data(username, score)
     test_frame.pack_forget()
     text9 = ttk.Label(leaderboard_frame,text="Top 5 users:")
     text9.grid(row=0,column=0)
+
     leaderboard_frame.pack()
     
 def signup_button():
@@ -245,25 +247,43 @@ def back():
 def play_audio(difficulty):
     """
     function that picks a word and plays the appropiate audio
+    the "run" variable is used to work around the fact python automatically runs any functions that have parameters passed to them
     """
-    global word
-    word = backend.question(difficulty)
-    print(word)
+    global run,word
+    if run == False:
+        run = True
+    else:
+        word = backend.question(difficulty)
+        if word in used_words == True:
+            play_audio(difficulty) #runs the function again
+        else:
+            used_words.append(word) #adds the word to an array so it can't be reused
+            #at this point the TTS library should be used to play the selected word
 
 
 def submit_answer(self):
     """
-    function that submits the users answer to be checked
+    function that reads the users input, checks against the selected word and updates scores
     """
-    print()
+    global score,run2,word
+    if run2 == False:
+        run2=True
+    else:
+        answer = user_word.get()
+        if answer == word:
+            score= score+1
+            #add a way of visualising that the users got it right?
+        else:
+            pass
     
 root = tk.Tk()
-#gives the container the identifier "root" 
 root.title("Spelling test")
-root.bind('<Return>', submit_answer)
+root.bind('<Return>', submit_answer) #allows the uesr to press the return key to submit their answer(this runs the function correctly unlike the submit button)
 
+""""
+creating different frames to be used by the program
+"""""
 splash_screen_frame = ttk.Frame(root)
-#creates a new framethat widgets can be added to
 signup_frame = ttk.Frame(root)
 signin_frame = ttk.Frame(root)
 two_step_frame = ttk.Frame(root)
@@ -271,19 +291,27 @@ dificulty_select_frame = ttk.Frame(root)
 test_frame = ttk.Frame(root)
 leaderboard_frame = ttk.Frame(root)
 
-global current_frame,authorised,passcode,word,score
+""""
+declaring global vairables and asigning default values
+"""""
+global current_frame,authorised,passcode,word,score,run,run2,used_words
 score = 0
+word = ""
+used_words = []
+run = False
+run2 = False
 authorised = True
 twoauthorised = True
 
+""""
+defining variables to be used by input fields in the program
+"""""
 username = tk.StringVar()
-#empty string variable that will hold the users username when submitted
 password = tk.StringVar() 
 email = tk.StringVar() 
 auth_code = tk.StringVar() 
-word = tk.StringVar()
+user_word = tk.StringVar()
 
-test("easy")
-#splash_screen() 
+splash_screen() 
 #runs the first function that starts the program
 root.mainloop()
