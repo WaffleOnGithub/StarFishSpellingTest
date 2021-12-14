@@ -6,6 +6,7 @@ Module for generating and checking questions
 """
 
 import random
+import win32com.client as wincl
 
 words = {
     "easy": ["apple", "inside", "parents", "guard", "lamb", "wrap", "geese", "gem", "touch", "wreck", "foul",
@@ -25,6 +26,9 @@ words = {
 def question(difficulty):
     return random.choice(words[difficulty])
 
+def play_audio(word):
+    speak = wincl.Dispatch("SAPI.SpVoice")
+    speak.Speak(word)
 
 def check(answer, correct):
     return correct == answer

@@ -131,20 +131,20 @@ def test(difficulty):
     text10 = ttk.Label(test_frame,text="Score: "+str(score))
     text10.grid(row=0,column=2,sticky="W")
 
-    button11 = ttk.Button(test_frame,text="Leaderboard",command=leaderboard)
-    button11.grid(row=2,column=1)
-    button12 = ttk.Button(test_frame,text="Next Word",command=play_audio(difficulty))
-    button12.grid(row=2,column=2)
-    button13 = ttk.Button(test_frame,text="Submit",command=submit_answer(""))
-    button13.grid(row=1,column=2)
-    button13 = ttk.Button(test_frame,text="Back",command=back)
-    button13.grid(row=2,column=0)
-    
     textbox7 = ttk.Entry(test_frame, textvariable=user_word)
     textbox7.grid(row=1,column=0,columnspan=2,sticky="W")
 
+    button11 = ttk.Button(test_frame,text="Leaderboard",command=leaderboard)
+    button11.grid(row=2,column=1)
+    button12 = ttk.Button(test_frame,text="Next Word",command=lambda: backend.play_audio(backend.question(difficulty)))
+    button12.grid(row=2,column=2)
+    button13 = ttk.Button(test_frame,text="Submit",command=submit_answer(textbox7.get()))
+    button13.grid(row=1,column=2)
+    button13 = ttk.Button(test_frame,text="Back",command=back)
+    button13.grid(row=2,column=0)
+
     dificulty_select_frame.pack_forget()
-    test_frame.pack()    
+    test_frame.pack()
 def leaderboard():
     """
     function that displays the leaderboard at the end of the game
@@ -312,6 +312,6 @@ email = tk.StringVar()
 auth_code = tk.StringVar() 
 user_word = tk.StringVar()
 
-splash_screen() 
+dificulty_select()
 #runs the first function that starts the program
 root.mainloop()
