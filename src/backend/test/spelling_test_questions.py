@@ -1,6 +1,6 @@
 """
-Edited by: Liud
-Date edited: 12/11/21
+Edited by: Rowan
+Date edited: 15/11/21
 
 Module for generating and checking questions
 """
@@ -24,11 +24,8 @@ words = {
 
 
 def question(difficulty):
-    return random.choice(words[difficulty])
+    return random.choice(words[difficulty]) #returns a random word
 
 def play_audio(word):
-    speak = wincl.Dispatch("SAPI.SpVoice")
-    speak.Speak(word)
-
-def check(answer, correct):
-    return correct == answer
+    speak = wincl.Dispatch("SAPI.SpVoice") 
+    speak.Speak(word) #uses wincl to say the word
