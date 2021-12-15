@@ -1,10 +1,10 @@
 """
-Edited by: Joe
-Date edited: 14/12/21
+Last edited by: Joe
+Date edited: 15/12/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
-TODO: leaderboard frame,fix formatting on the signup/signin error boxes,implement TTS
-known bugs:submit and next audio buttons don't run their function when clicked (however the return key can be used to submit instead)
+TODO: leaderboard frame,fix formatting on the signup/signin error boxes
+known bugs:submit function not working
 """
 from tkinter import*
 import tkinter as tk
@@ -138,7 +138,7 @@ def test(difficulty):
     button11.grid(row=2,column=1)
     button12 = ttk.Button(test_frame,text="Next Word",command=lambda: backend.play_audio(backend.question(difficulty)))
     button12.grid(row=2,column=2)
-    button13 = ttk.Button(test_frame,text="Submit",command=submit_answer(textbox7.get()))
+    button13 = ttk.Button(test_frame,text="Submit",command=lambda: submit_answer(user_word.get()))
     button13.grid(row=1,column=2)
     button13 = ttk.Button(test_frame,text="Back",command=back)
     button13.grid(row=2,column=0)
@@ -261,24 +261,21 @@ def play_audio(difficulty):
             #at this point the TTS library should be used to play the selected word
 
 
-def submit_answer(self):
+def submit_answer(user_word):
     """
     function that reads the users input, checks against the selected word and updates scores
     """
-    global score,run2,word
-    if run2 == False:
-        run2=True
-    else:
-        answer = user_word.get()
-        if answer == word:
+    global score,word
+    answer = user_word.get()
+    if answer == word:
             score= score+1
             #add a way of visualising that the users got it right?
-        else:
+    else:
             pass
     
 root = tk.Tk()
 root.title("Spelling test")
-root.bind('<Return>', submit_answer) #allows the uesr to press the return key to submit their answer(this runs the function correctly unlike the submit button)
+#root.bind('<Return>', submit_answer) #allows the uesr to press the return key to submit their answer(this runs the function correctly unlike the submit button)
 
 """"
 creating different frames to be used by the program
