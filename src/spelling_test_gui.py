@@ -4,7 +4,7 @@ Date edited: 15/12/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
 TODO: leaderboard frame,fix formatting on the signup/signin error boxes
-known bugs:submit function not working
+known bugs:
 """
 from tkinter import*
 import tkinter as tk
@@ -136,7 +136,7 @@ def test(difficulty):
 
     button11 = ttk.Button(test_frame,text="Leaderboard",command=leaderboard)
     button11.grid(row=2,column=1)
-    button12 = ttk.Button(test_frame,text="Next Word",command=lambda: backend.play_audio(backend.question(difficulty)))
+    button12 = ttk.Button(test_frame,text="Next Word",command=lambda: play_audio(difficulty))
     button12.grid(row=2,column=2)
     button13 = ttk.Button(test_frame,text="Submit",command=lambda: submit_answer(user_word.get()))
     button13.grid(row=1,column=2)
@@ -249,33 +249,36 @@ def play_audio(difficulty):
     function that picks a word and plays the appropiate audio
     the "run" variable is used to work around the fact python automatically runs any functions that have parameters passed to them
     """
-    global run,word
-    if run == False:
-        run = True
+    global word
+    word = backend.question(difficulty)
+    print(word)
+    if word in used_words == True:
+        play_audio(difficulty) #runs the function again
     else:
-        word = backend.question(difficulty)
-        if word in used_words == True:
-            play_audio(difficulty) #runs the function again
-        else:
-            used_words.append(word) #adds the word to an array so it can't be reused
-            #at this point the TTS library should be used to play the selected word
-
+        used_words.append(word) #adds the word to an array so it can't be reused
+        backend.play_audio(word)
 
 def submit_answer(user_word):
     """
     function that reads the users input, checks against the selected word and updates scores
     """
+    print("call")
     global score,word
-    answer = user_word.get()
+    answer = user_word
     if answer == word:
-            score= score+1
-            #add a way of visualising that the users got it right?
+        print(score)
+        score= score+1
+        print(score)
+        text10 = ttk.Label(test_frame,text="Score: "+str(score))
+        text10.grid(row=0,column=2,sticky="W")
+        
     else:
-            pass
+        print("incorrect")
+        pass
     
 root = tk.Tk()
 root.title("Spelling test")
-#root.bind('<Return>', submit_answer) #allows the uesr to press the return key to submit their answer(this runs the function correctly unlike the submit button)
+root.bind('<Return>', submit_answer) #allows the uesr to press the return key to submit their answer(this runs the function correctly unlike the submit button)
 
 """"
 creating different frames to be used by the program
@@ -291,7 +294,7 @@ leaderboard_frame = ttk.Frame(root)
 """"
 declaring global vairables and asigning default values
 """""
-global current_frame,authorised,passcode,word,score,run,run2,used_words
+global current_frame,authorised,passcode,word,score,used_words
 score = 0
 word = ""
 used_words = []
