@@ -3,8 +3,8 @@ Last edited by: Joe
 Date edited: 15/12/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
-TODO: leaderboard frame,fix formatting on the signup/signin error boxes
-known bugs:
+TODO: leaderboard frame
+known bugs: submit button can be pressed infinitley 
 """
 from tkinter import*
 import tkinter as tk
@@ -161,11 +161,11 @@ def signup_button():
     function that erases the previous frame, adds the users details to a database and then prompts the uesr to sign in if the data was saved correctly
     """
     if username.get()== "":
-       messagebox.showerror('Input fields cannot be left blank')
+       messagebox.showerror("Error", "Input fields cannot be left blank")
     elif  password.get() =="":
-       messagebox.showerror('Input fields cannot be left blank')
+       messagebox.showerror("Error", "Input fields cannot be left blank")
     elif email.get() =="":
-       messagebox.showerror('Input fields cannot be left blank')
+       messagebox.showerror("Error", "Input fields cannot be left blank")
     else:
         auth = backend.register(username.get(), password.get(), email.get())
         print(auth)
@@ -177,11 +177,11 @@ def signin_button():
     function that checks the users credentials against the database and moves forward if correct
     """
     if username.get()== "":
-       messagebox.showerror('Input fields cannot be left blank')
+       messagebox.showerror("Error", "Input fields cannot be left blank")
     elif  password.get() =="":
-       messagebox.showerror('Input fields cannot be left blank')
+       messagebox.showerror("Error", "Input fields cannot be left blank")
     elif email.get() =="":
-        messagebox.showerror('Input fields cannot be left blank')
+        messagebox.showerror("Error", "Input fields cannot be left blank")
     else:
         #uses the users inputs as parameters for login
         auth = backend.login(username.get(), password.get())["success"]
@@ -312,6 +312,6 @@ email = tk.StringVar()
 auth_code = tk.StringVar() 
 user_word = tk.StringVar()
 
-dificulty_select()
+splash_screen()
 #runs the first function that starts the program
 root.mainloop()
