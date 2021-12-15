@@ -3,13 +3,14 @@ Last edited by: Joe
 Date edited: 15/12/21
 
 Main GUI that calls on custom subroutines to have a working spelling test
-TODO: leaderboard frame
+TODO: end after 10 questions asked
 known bugs: submit button can be pressed infinitley 
 """
 from tkinter import*
 import tkinter as tk
 from tkinter import ttk 
 from tkinter import messagebox
+import time
 import backend 
 
 def splash_screen():
@@ -138,13 +139,17 @@ def test(difficulty):
     button11.grid(row=2,column=1)
     button12 = ttk.Button(test_frame,text="Next Word",command=lambda: play_audio(difficulty))
     button12.grid(row=2,column=2)
-    button13 = ttk.Button(test_frame,text="Submit",command=lambda: submit_answer(user_word.get()))
+    button13 = ttk.Button(test_frame,text="Submit",command=lambda: submit_answer(user_word.get(), difficulty, textbox7))
     button13.grid(row=1,column=2)
     button13 = ttk.Button(test_frame,text="Back",command=back)
     button13.grid(row=2,column=0)
 
     dificulty_select_frame.pack_forget()
     test_frame.pack()
+
+    play_audio(difficulty)
+    root.bind('<Return>', lambda a: submit_answer(user_word.get(), difficulty, textbox7))  # allows the uesr to press the return key to submit their answer(this runs the function correctly unlike the submit button)
+
 def leaderboard():
     """
     function that displays the leaderboard at the end of the game
@@ -174,9 +179,11 @@ def signup_button():
        messagebox.showerror("Error", "Input fields cannot be left blank")
     else:
         auth = backend.register(username.get(), password.get(), email.get())
-        print(auth)
-        signup_frame.pack_forget()
-        splash_screen()
+        if auth["success"]:
+            signup_frame.pack_forget()
+            splash_screen()
+        else:
+            messagebox.showerror(auth["message"])
     
 def signin_button(): 
     """
@@ -190,12 +197,12 @@ def signin_button():
         messagebox.showerror("Error", "Input fields cannot be left blank")
     else:
         #uses the users inputs as parameters for login
-        auth = backend.login(username.get(), password.get())["success"]
-        if auth == True:
+        auth = backend.login(username.get(), password.get())
+        if auth["success"]:
             signin_frame.pack_forget()
             two_step()
         else:
-                   messagebox.showerror('Login details incorrect')
+            messagebox.showerror(auth["message"])
 
     signup_frame.pack_forget()
     two_step
@@ -257,26 +264,24 @@ def play_audio(difficulty):
     """
     global word
     word = backend.question(difficulty)
-    print(word)
     if word in used_words == True:
         play_audio(difficulty) #runs the function again
     else:
         used_words.append(word) #adds the word to an array so it can't be reused
         backend.play_audio(word)
 
-def submit_answer(user_word):
+def submit_answer(user_word, difficulty, entry):
     """
     function that reads the users input, checks against the selected word and updates scores
     """
-    print("call")
-    global score,word
+    global score,word, textbox7
     answer = user_word
     if answer == word:
-        print(score)
-        score= score+1
-        print(score)
+        score= score+5
         text10 = ttk.Label(test_frame,text="Score: "+str(score))
         text10.grid(row=0,column=2,sticky="W")
+        entry.delete(0, END)
+        play_audio(difficulty)
         
     else:
         print("incorrect")
@@ -284,7 +289,6 @@ def submit_answer(user_word):
     
 root = tk.Tk()
 root.title("Spelling test")
-root.bind('<Return>', submit_answer) #allows the uesr to press the return key to submit their answer(this runs the function correctly unlike the submit button)
 
 """"
 creating different frames to be used by the program
