@@ -149,10 +149,16 @@ def leaderboard():
     """
     function that displays the leaderboard at the end of the game
     """
-    backend.save_data(username, score)
+
+    backend.save_data(username.get(), score)
     test_frame.pack_forget()
     text9 = ttk.Label(leaderboard_frame,text="Top 5 users:")
     text9.grid(row=0,column=0)
+
+    leaderboard = backend.get_data()
+    for i in range(0, len(leaderboard)):
+        slot = ttk.Label(leaderboard_frame, text=leaderboard[i][0] + ": " + str(leaderboard[i][1]))
+        slot.grid(row=i+1, column=0)
 
     leaderboard_frame.pack()
     
@@ -312,6 +318,6 @@ email = tk.StringVar()
 auth_code = tk.StringVar() 
 user_word = tk.StringVar()
 
-splash_screen()
+dificulty_select()
 #runs the first function that starts the program
 root.mainloop()
