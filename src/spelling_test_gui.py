@@ -322,6 +322,6 @@ email = tk.StringVar()
 auth_code = tk.StringVar() 
 user_word = tk.StringVar()
 
-dificulty_select()
+splash_screen()
 #runs the first function that starts the program
 root.mainloop()
